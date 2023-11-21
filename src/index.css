@@ -1,5 +1,5 @@
 :root {
-  --color-darkest: #343a40;
+  --color-darkest: #242424;
   --color-dark: #495057;
   --color-medium: #ced4da;
   --color-light: #f1f3f5;
@@ -8,7 +8,7 @@
   --color-accent: #ffa94d;
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Codystar&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Codystar&display=swap');
 
 * {
   margin: 0;
@@ -62,7 +62,7 @@ img {
 }
 
 h1 {
-  font-family: "Codystar";
+  font-family: 'Codystar', sans-serif;
   font-size: 5.6rem;
 }
 
@@ -110,6 +110,7 @@ progress {
   background-color: var(--color-medium);
   border-radius: 100px;
 }
+
 ::-webkit-progress-value {
   background-color: var(--color-theme);
   border-radius: 100px;
@@ -161,6 +162,7 @@ progress {
   border: 2px solid var(--color-theme);
   color: var(--color-light);
 }
+
 .btn-option.wrong {
   background-color: var(--color-accent);
   border: 2px solid var(--color-accent);
@@ -217,8 +219,7 @@ progress {
 .loader {
   width: 50px;
   height: 24px;
-  background: radial-gradient(circle closest-side, currentColor 90%, #0000) 0%
-      50%,
+  background: radial-gradient(circle closest-side, currentColor 90%, #0000) 0% 50%,
     radial-gradient(circle closest-side, currentColor 90%, #0000) 50% 50%,
     radial-gradient(circle closest-side, currentColor 90%, #0000) 100% 50%;
   background-size: calc(100% / 3) 12px;
@@ -230,12 +231,15 @@ progress {
   20% {
     background-position: 0% 0%, 50% 50%, 100% 50%;
   }
+
   40% {
     background-position: 0% 100%, 50% 0%, 100% 50%;
   }
+
   60% {
     background-position: 0% 50%, 50% 100%, 100% 0%;
   }
+
   80% {
     background-position: 0% 50%, 50% 50%, 100% 100%;
   }
@@ -256,4 +260,30 @@ progress {
 .counter * {
   font-size: inherit;
   padding: 0.8rem;
+}
+
+.logo {
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo {
+    animation: logo-spin infinite 20s linear;
+  }
 }
