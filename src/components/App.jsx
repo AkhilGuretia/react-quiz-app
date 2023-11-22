@@ -6,6 +6,7 @@ import Error from "./Error";
 import StartScreen from "./StartScreen";
 import Questions from "./Questions";
 import NextButton from "./NextButton";
+import ProgressBar from "./ProgressBar";
 
 const initialState = {
   questions: [],
@@ -42,12 +43,13 @@ const reducer = (state, action) => {
 };
 
 const App = () => {
-  const [{ questions, status, index, answer }, dispatch] = useReducer(
+  const [{ questions, status, index, answer, points }, dispatch] = useReducer(
     reducer,
     initialState
   );
 
   const numQuestions = questions.length;
+  const maxPoints = questions.reduce((prev, curr) => prev + curr.points, 0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,6 +82,13 @@ const App = () => {
         )}
         {status === "active" && (
           <>
+            <ProgressBar
+              numQuestions={numQuestions}
+              index={index}
+              maxPoints={maxPoints}
+              answer={answer}
+              points={points}
+            />
             <Questions
               question={questions[index]}
               dispatch={dispatch}

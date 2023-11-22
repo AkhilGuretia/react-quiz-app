@@ -38,6 +38,7 @@ body {
 
 .main {
   width: 50rem;
+  margin-left: 25px;
 }
 
 .app-header {
