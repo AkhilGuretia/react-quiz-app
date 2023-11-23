@@ -8,6 +8,10 @@ import Questions from "./Questions";
 import NextButton from "./NextButton";
 import ProgressBar from "./ProgressBar";
 import FinishScreen from "./FinishScreen";
+import Footer from "./Footer";
+import Timer from "./Timer";
+
+const SECS_PER_QUESTION = 30;
 
 const initialState = {
   questions: [],
@@ -16,6 +20,7 @@ const initialState = {
   answer: null,
   points: 0,
   highScore: 0,
+  timeTillAutoSubmit: null,
 };
 
 const reducer = (state, action) => {
@@ -25,7 +30,11 @@ const reducer = (state, action) => {
     case "fetchFailed":
       return { ...state, status: "error" };
     case "start":
-      return { ...state, status: "active" };
+      return {
+        ...state,
+        status: "active",
+        timeTillAutoSubmit: state.questions.length * SECS_PER_QUESTION,
+      };
     case "newAnswer": {
       const question = state.questions.at(state.index);
       return {
@@ -51,7 +60,16 @@ const reducer = (state, action) => {
         ...initialState,
         questions: state.questions,
         status: "ready",
-        highScore: state.highScore,
+        highScore:
+          state.points > state.highScore ? state.points : state.highScore,
+      };
+    case "TickTock":
+      return {
+        ...state,
+        timeTillAutoSubmit: state.timeTillAutoSubmit - 1,
+        status: state.timeTillAutoSubmit === 0 ? "finished" : state.status,
+        highScore:
+          state.points > state.highScore ? state.points : state.highScore,
       };
     default:
       throw new Error("Unknown action triggered");
@@ -59,8 +77,10 @@ const reducer = (state, action) => {
 };
 
 const App = () => {
-  const [{ questions, status, index, answer, points, highScore }, dispatch] =
-    useReducer(reducer, initialState);
+  const [
+    { questions, status, index, answer, points, highScore, timeTillAutoSubmit },
+    dispatch,
+  ] = useReducer(reducer, initialState);
 
   const numQuestions = questions.length;
   const maxPoints = questions.reduce((prev, curr) => prev + curr.points, 0);
@@ -108,12 +128,18 @@ const App = () => {
               dispatch={dispatch}
               answer={answer}
             />
-            <NextButton
-              dispatch={dispatch}
-              answer={answer}
-              index={index}
-              numQuestions={numQuestions}
-            />
+            <Footer>
+              <Timer
+                timeTillAutoSubmit={timeTillAutoSubmit}
+                dispatch={dispatch}
+              />
+              <NextButton
+                dispatch={dispatch}
+                answer={answer}
+                index={index}
+                numQuestions={numQuestions}
+              />
+            </Footer>
           </>
         )}
         {status === "finished" && (
